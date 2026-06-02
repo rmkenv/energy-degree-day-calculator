@@ -49,9 +49,8 @@ coverage.xml
 # Project-specific
 tests/
 docs/_build/
-examples/
-.github/
-*.csv  # ignore large or local datasets
+*.csv
+!examples/*.csv
 
 # Translations
 *.mo
