@@ -31,7 +31,7 @@ def run_example():
         lon=lon,
         start_date=start_date,
         end_date=end_date,
-        source="meteostat"
+        source="open_meteo"
     )
 
     # Step 2: Align CSV data with HDD results
