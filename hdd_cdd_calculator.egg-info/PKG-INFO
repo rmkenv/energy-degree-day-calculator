@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: hdd-cdd-calculator
-Version: 0.1.4
+Version: 0.1.5
 Summary: A Python library for calculating Heating Degree Days (HDD) and Cooling Degree Days (CDD) from the U.S. NWS API and Open-Meteo, with regression and visualization tools.
 Author-email: Ryan Kmetz <consultrmk@gmail.com>
 License: MIT

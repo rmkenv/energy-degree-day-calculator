@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hdd-cdd-calculator"
-version = "0.1.4"
+version = "0.1.5"
 description = "A Python library for calculating Heating Degree Days (HDD) and Cooling Degree Days (CDD) from the U.S. NWS API and Open-Meteo, with regression and visualization tools."
 readme = "README.md"
 requires-python = ">=3.8"
