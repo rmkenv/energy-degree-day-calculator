@@ -2,6 +2,8 @@ LICENSE
 MANIFEST.in
 README.md
 pyproject.toml
+requirements.txt
+examples/sample_energy_data.csv
 hdd_cdd_calculator/__init__.py
 hdd_cdd_calculator/__main__.py
 hdd_cdd_calculator/calculator.py

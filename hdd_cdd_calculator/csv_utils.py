@@ -1,8 +1,10 @@
 # hdd_cdd_calculator/csv_utils.py
 import pandas as pd
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, TYPE_CHECKING
 from io import StringIO
-from hdd_cdd_calculator import DegreeDaysResult  # For typing
+
+if TYPE_CHECKING:
+    from .calculator import DegreeDaysResult
 
 
 def read_energy_data_from_csv(
@@ -17,7 +19,7 @@ def read_energy_data_from_csv(
 
     Args:
         csv_input: Path to CSV file or file-like object (StringIO).
-        column: Which energy column to load ("kwh", "mmbtu", or "gal"), defaults to "kwh".
+        column: Which energy column to load ("kwh", "mmbtu", or "gal").
 
     Returns:
         List of numeric energy consumption values from the selected column.
@@ -31,11 +33,9 @@ def read_energy_data_from_csv(
             f"CSV is missing required '{column}' column. "
             f"Available columns: {list(df.columns)}"
         )
-
     energy_series = df[column].dropna()
     if energy_series.empty:
         raise ValueError(f"The '{column}' column contains no data.")
-
     return energy_series.tolist()
 
 
@@ -45,8 +45,6 @@ def read_energy_data_with_dates(
 ) -> pd.DataFrame:
     """
     Read dates and energy consumption data from CSV.
-
-    Returns a DataFrame with `date` and the selected column.
 
     Args:
         csv_input: Path or file-like object for CSV.
@@ -65,7 +63,7 @@ def read_energy_data_with_dates(
 
 
 def align_energy_with_degree_days(
-    degree_days: List[DegreeDaysResult],
+    degree_days: list,
     csv_input: Union[str, StringIO],
     energy_column: str = "kwh",
     degree_day_type: str = "hdd"
@@ -76,8 +74,8 @@ def align_energy_with_degree_days(
     Args:
         degree_days: List of DegreeDaysResult namedtuples (with `date` field).
         csv_input: Path or file-like object to CSV containing energy data.
-        energy_column: Name of the energy data column to use ("kwh", "mmbtu", "gal").
-        degree_day_type: "hdd" or "cdd" — which degree day value to align.
+        energy_column: Name of the energy data column ("kwh", "mmbtu", "gal").
+        degree_day_type: "hdd" or "cdd".
 
     Returns:
         (energy_values, degree_day_values): Both lists matched by date.
@@ -85,24 +83,18 @@ def align_energy_with_degree_days(
     Raises:
         ValueError: If no data overlaps or columns are missing.
     """
-    # Convert degree days to DataFrame
     dd_df = pd.DataFrame([dd._asdict() for dd in degree_days])
     dd_df["date"] = pd.to_datetime(dd_df["date"])
 
-    # Read CSV with parsed dates
     energy_df = pd.read_csv(csv_input, parse_dates=["date"])
     if energy_column not in energy_df.columns:
         raise ValueError(
-            f"CSV missing '{energy_column}' column. Found columns: {list(energy_df.columns)}"
+            f"CSV missing '{energy_column}' column. Found: {list(energy_df.columns)}"
         )
 
-    # Merge on date
     merged = pd.merge(dd_df, energy_df[["date", energy_column]], on="date", how="inner")
     if merged.empty:
         raise ValueError("No overlapping dates between degree days and energy data.")
 
     merged = merged.sort_values("date")
-    degree_day_values = merged[degree_day_type].tolist()
-    energy_values = merged[energy_column].tolist()
-
-    return energy_values, degree_day_values
+    return merged[energy_column].tolist(), merged[degree_day_type].tolist()
