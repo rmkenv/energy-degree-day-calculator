@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "hdd-cdd-calculator"
 version = "0.1.4"
-description = "A Python library for calculating Heating Degree Days (HDD) and Cooling Degree Days (CDD) from multiple weather data sources including the U.S. NWS API and Meteostat, with regression and visualization tools."
+description = "A Python library for calculating Heating Degree Days (HDD) and Cooling Degree Days (CDD) from the U.S. NWS API and Open-Meteo, with regression and visualization tools."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
@@ -20,7 +20,7 @@ keywords = [
     "climate",
     "energy",
     "NWS",
-    "Meteostat",
+    "Open-Meteo",
     "regression",
     "visualization"
 ]
@@ -41,7 +41,6 @@ classifiers = [
 dependencies = [
     "requests>=2.28",
     "pandas>=1.3",
-    "requests>=2.28",
     "python-dateutil>=2.8",
     "scikit-learn>=1.0",
     "matplotlib>=3.5"
@@ -67,5 +66,4 @@ tests = [
 "Tracker" = "https://github.com/rmkenv/hdd_cdd_calculator/issues"
 
 [tool.setuptools]
-# Make sure setuptools only packages our main code
 packages = ["hdd_cdd_calculator"]
